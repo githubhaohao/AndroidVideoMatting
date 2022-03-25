@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">字节流动</string>
+    <string-array name="model_array">
+        <item>rvm-512x512</item>
+        <item>rvm-640x480</item>
+    </string-array>
+    <string-array name="cpugpu_array">
+        <item>CPU</item>
+        <item>GPU</item>
+    </string-array>
+    <string name="action_resolutions">Resolutions</string>
+    <string name="action_switch_camera">SwitchCamera</string>
+    <string name="action_settings">Settings</string>
+    <string name="select_sample">Select FFmpeg Example</string>
+
+</resources>
