@@ -50,8 +50,6 @@ public:
 
 	void OnDrawFrame();
 
-	void ReadImgFromOesTexture(int oesTextureId, NativeImage *pOutImg);
-
 	//加载滤镜素材图像
 	void SetLUTImage(int index, int format, int width, int height, uint8_t *pData);
 

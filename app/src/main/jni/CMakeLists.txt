@@ -1,4 +1,4 @@
-project(ncnnbodyseg)
+project(video_matting)
 
 cmake_minimum_required(VERSION 3.10)
 
@@ -17,12 +17,12 @@ include_directories(
 file(GLOB src-files
         ${CMAKE_SOURCE_DIR}/JniImp.cpp
         ${CMAKE_SOURCE_DIR}/BodySeg.cpp
+        ${CMAKE_SOURCE_DIR}/nanodet.cpp
         ${CMAKE_SOURCE_DIR}/NativeContext.cpp
         ${CMAKE_SOURCE_DIR}/util/*.cpp
         ${CMAKE_SOURCE_DIR}/render/*.cpp
-        ${CMAKE_SOURCE_DIR}/render/RGB2NV21Helper.cpp
         )
 
-add_library(ncnnbodyseg SHARED ${src-files} nanodetncnn.cpp nanodet.cpp ndkcamera.cpp )
+add_library(video_matting SHARED ${src-files})
 
-target_link_libraries(ncnnbodyseg ncnn ${OpenCV_LIBS} camera2ndk mediandk GLESv3 EGL)
+target_link_libraries(video_matting ncnn ${OpenCV_LIBS} camera2ndk mediandk GLESv3 EGL)

@@ -7,7 +7,6 @@
  * */
 
 #include "GLCameraRender.h"
-#include "RGB2NV21Helper.h"
 #include <GLUtils.h>
 #include <gtc/matrix_transform.hpp>
 
@@ -146,12 +145,6 @@ GLCameraRender::~GLCameraRender() {
         delete m_BodySeg;
         m_BodySeg = nullptr;
     }
-
-    if(m_Rgb2Nv21Helper) {
-        delete m_Rgb2Nv21Helper;
-        m_Rgb2Nv21Helper = nullptr;
-    }
-
 }
 
 void GLCameraRender::Init(AAssetManager* mgr) {
@@ -573,36 +566,6 @@ void GLCameraRender::GetRenderFrameFromFBO() {
         m_RenderFrameCallback(m_CallbackContext, &nativeImage);
         delete []pBuffer;
     }
-}
-
-void GLCameraRender::ReadImgFromTexture(int textureId, NativeImage *pOutImg) {
-    LOGCATE("GLCameraRender::ReadImgFromTexture");
-    if(m_Rgb2Nv21Helper == nullptr) {
-        m_Rgb2Nv21Helper = new RGB2NV21Helper();
-        m_Rgb2Nv21Helper->Init(pOutImg->width, pOutImg->height);
-
-    }
-    m_Rgb2Nv21Helper->Draw(textureId, pOutImg);
-
-//    glBindFramebuffer(GL_FRAMEBUFFER, m_FboId);
-//    glViewport(0, 0, m_RenderImage.width, m_RenderImage.height);
-//    glClear(GL_COLOR_BUFFER_BIT);
-//    glUseProgram (m_FBOProgramObj);
-//    glBindVertexArray(m_VaoId);
-//
-//    UpdateMVPMatrix(180, 0, 1.0, 1.0);
-//    GLUtils::setMat4(m_FBOProgramObj, "u_MVPMatrix", m_MVPMatrix);
-//
-//    glActiveTexture(GL_TEXTURE0);
-//    glBindTexture(GL_TEXTURE_2D, textureId);
-//    GLUtils::setInt(m_FBOProgramObj, "s_texture0", 0);
-//    GLUtils::setInt(m_FBOProgramObj, "u_nImgType", IMAGE_FORMAT_RGB);
-//    GLUtils::setInt(m_FBOProgramObj, "u_nRenderMask", 0);
-//    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (const void *)0);
-//
-//    //GetRenderFrameFromFBO();
-//    glReadPixels(0, 0, m_RenderImage.width, m_RenderImage.height, GL_RGBA, GL_UNSIGNED_BYTE, pOutImg->ppPlane[0]);
-//    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 

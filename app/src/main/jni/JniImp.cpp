@@ -57,7 +57,7 @@ Java_com_tencent_ncnnbodyseg_media_CameraNativeContext_native_1OnPreviewFrame(JN
     jbyte* outBytes = env->GetByteArrayElements(outData, 0);
     jsize outBytesSize = env->GetArrayLength(outData);
     env->SetByteArrayRegion(outData, 0, outBytesSize,reinterpret_cast<const jbyte *>(pSegResult->ppPlane[0]));
-    env->ReleaseByteArrayElements(outData, outBytes, 0);
+    //env->ReleaseByteArrayElements(outData, outBytes, 0);
     //NativeImageUtil::DumpNativeImage(pSegResult, "/sdcard", "SegResult");
 
 //    NativeImage image;
@@ -136,41 +136,4 @@ Java_com_tencent_ncnnbodyseg_media_CameraNativeContext_native_1SetFragShader(JNI
     if(pContext) pContext->SetFragShader(index, buf, length + 1);
     free(buf);
     env->ReleaseStringUTFChars(str, cStr);
-}
-
-extern "C"
-JNIEXPORT void JNICALL
-Java_com_tencent_ncnnbodyseg_media_CameraNativeContext_native_1ReadDataFromTextureId(JNIEnv *env,
-                                                                                     jobject thiz,
-                                                                                     jint oes_texture_id,
-                                                                                     jint texWidth,
-                                                                                     jint texHeight,
-                                                                                     jbyteArray outData) {
-    RGB2NV21Helper *rgb2Nv21Helper = new RGB2NV21Helper();
-    //测试从OES纹理中读取数据
-    NativeImage image;
-    image.format = IMAGE_FORMAT_NV21;
-    image.width  = texWidth;
-    image.height = texHeight;
-    NativeImageUtil::AllocNativeImage(&image);
-    rgb2Nv21Helper->Init(image.width, image.height);
-    rgb2Nv21Helper->Draw(oes_texture_id, &image);
-    //保存到 /sdcard/IMG_480x640_readOESTexture_0.NV21
-    NativeImageUtil::DumpNativeImage(&image, "/sdcard", "readOESTexture");
-
-    //读完之后送去做分割渲染
-    NativeImage *pSegResult;
-    NativeContext *pContext = NativeContext::GetContext(env, thiz);
-    if(pContext) pContext->OnPreviewFrame(IMAGE_FORMAT_NV21, image.ppPlane[0], image.width, image.height, &pSegResult);
-
-    NativeImageUtil::FreeNativeImage(&image);
-    rgb2Nv21Helper->UnInit();
-    delete rgb2Nv21Helper;
-
-    jbyte* outBytes = env->GetByteArrayElements(outData, 0);
-    jsize outBytesSize = env->GetArrayLength(outData);
-    env->SetByteArrayRegion(outData, 0, outBytesSize,reinterpret_cast<const jbyte *>(pSegResult->ppPlane[0]));
-    env->ReleaseByteArrayElements(outData, outBytes, 0);
-
-
 }

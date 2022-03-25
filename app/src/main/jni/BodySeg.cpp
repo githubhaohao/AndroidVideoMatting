@@ -297,19 +297,6 @@ void BodySeg::Process(NativeImage *pNV21, NativeImage *pOutI420, NativeImage *pO
 
     NativeImageUtil::CopyNativeImage(&image, pOutI420);
     //NativeImageUtil::DumpNativeImage(&image, "/sdcard", "BodySeg");
-
-//    NativeImage image;
-//    image.format = IMAGE_FORMAT_RGB;
-//    image.width  = render_w;
-//    image.height = render_h;
-//    image.ppPlane[0] = rgb_render.data;
-//    NativeImageUtil::DumpNativeImage(&image, "/sdcard", "BodySeg");
-//
-//    image.format = IMAGE_FORMAT_GRAY;
-//    image.width  = render_w;
-//    image.height = render_h;
-//    image.ppPlane[0] = mask_render.data;
-//    NativeImageUtil::DumpNativeImage(&image, "/sdcard", "BodySeg");
 }
 
 void BodySeg::UnInit() {

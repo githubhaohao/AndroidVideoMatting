@@ -184,9 +184,4 @@ void NativeContext::SetFragShader(int index, char *pShaderStr, int strSize) {
 	//GLCameraRender::GetInstance()->SetFragShaderStr(index, pShaderStr, strSize);
 }
 
-void NativeContext::ReadImgFromOesTexture(int oesTextureId, NativeImage *pOutImg) {
-	LOGCATE("NativeContext::ReadImgFromOesTexture [oesTextureId,pOutImg] = [%d, %p]", oesTextureId, pOutImg);
-	GLCameraRender::GetInstance()->ReadImgFromTexture(oesTextureId, pOutImg);
-}
-
 

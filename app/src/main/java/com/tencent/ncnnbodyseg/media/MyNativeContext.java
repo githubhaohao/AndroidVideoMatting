@@ -30,15 +30,12 @@ public class MyNativeContext extends CameraNativeContext implements GLSurfaceVie
     private static final String TAG = "MyNativeContext";
     private GLSurfaceView mGLSurfaceView;
     private int mOESTextureId;
-    private Context mContext;
-
 
     public MyNativeContext() {
 
     }
 
     public void init(Context context, AssetManager mgr, GLSurfaceView surfaceView) {
-        mContext = context;
         mGLSurfaceView = surfaceView;
         mGLSurfaceView.setEGLContextClientVersion(2);
         mGLSurfaceView.setRenderer(this);
@@ -65,7 +62,6 @@ public class MyNativeContext extends CameraNativeContext implements GLSurfaceVie
     }
 
     private byte[] mSegOutputData = null; //用于保存输出的分割结果 YUV（I420）格式
-    private ByteBuffer yBuffer = null, uBuffer = null, vBuffer = null;
 
     public void onPreviewFrame(int format, byte[] data, int width, int height) {
         Log.d(TAG, "onPreviewFrame() called with: data = [" + data + "], width = [" + width + "], height = [" + height + "]");
@@ -73,37 +69,6 @@ public class MyNativeContext extends CameraNativeContext implements GLSurfaceVie
             mSegOutputData = new byte[width * height * 3 / 2]; //用于保存输出的分割结果 YUV（I420）格式
         }
         native_OnPreviewFrame(format, data, width, height, mSegOutputData);
-        //分割结果传回 Java 层，保存至 /sdcard/IMG_SegResult_480x640.I420 准备推流
-        //saveBytes2File(mSegOutputData, String.format("IMG_SegResult_%dx%d.I420", height, width));
-        if(yBuffer == null) {
-            yBuffer = ByteBuffer.allocate(width * height);
-            uBuffer = ByteBuffer.allocate(width * height / 4);
-            vBuffer = ByteBuffer.allocate(width * height / 4);
-        }
-        yBuffer = ByteBuffer.wrap(getSubBytes(mSegOutputData, 0, width * height));
-        yBuffer.rewind();
-
-        uBuffer = ByteBuffer.wrap(getSubBytes(mSegOutputData, width * height, width * height / 4));
-        uBuffer.rewind();
-
-        vBuffer = ByteBuffer.wrap(getSubBytes(mSegOutputData, width * height * 5 / 4, width * height / 4));
-        vBuffer.rewind();
-
-//        检查数据有没有问题
-//        byte[] arr = new byte[uBuffer.remaining()];
-//        uBuffer.get(arr);
-//        saveBytes2File(arr, String.format("IMG_SegResult_%dx%d_U.Gray", height / 2, width / 2));
-//
-//        arr = new byte[vBuffer.remaining()];
-//        vBuffer.get(arr);
-//        saveBytes2File(arr, String.format("IMG_SegResult_%dx%d_V.Gray", height / 2, width / 2));
-
-        //推流
-        pushFramePlane(yBuffer, height, uBuffer, height / 2, vBuffer, height / 2, 1);
-    }
-
-    public void pushFramePlane(ByteBuffer yBuffer, int yRowStride, ByteBuffer uBuffer, int uRawStride, ByteBuffer vBuffer, int vRawStride, long uPixelStride) {
-
     }
 
     public byte[] getSubBytes(byte[] bytes, int offset, int size) {
@@ -138,9 +103,7 @@ public class MyNativeContext extends CameraNativeContext implements GLSurfaceVie
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         Log.d(TAG, "onSurfaceCreated() called with: gl = [" + gl + "], config = [" + config + "]");
-        mock();
         native_OnSurfaceCreated();
-
     }
 
     @Override
@@ -214,45 +177,5 @@ public class MyNativeContext extends CameraNativeContext implements GLSurfaceVie
                 }
             }
         }
-    }
-
-    /**
-     * 模拟你那边从纹理中读取图像，做分割，最后获取分割结果推流的过程
-     * */
-    void mock() {
-        createOESTexture();
-
-        int width = 640, height = 480; //默认相机预览宽高 640x480
-        if(mSegOutputData == null) {
-            mSegOutputData = new byte[width * height * 3 / 2]; //用于保存输出的分割结果 YUV（I420）格式
-        }
-
-        native_ReadDataFromTextureId(mOESTextureId, 640, 480, mSegOutputData);
-
-        if(yBuffer == null) {
-            yBuffer = ByteBuffer.allocate(width * height);
-            uBuffer = ByteBuffer.allocate(width * height / 4);
-            vBuffer = ByteBuffer.allocate(width * height / 4);
-        }
-        yBuffer = ByteBuffer.wrap(getSubBytes(mSegOutputData, 0, width * height));
-        yBuffer.rewind();
-
-        uBuffer = ByteBuffer.wrap(getSubBytes(mSegOutputData, width * height, width * height / 4));
-        uBuffer.rewind();
-
-        vBuffer = ByteBuffer.wrap(getSubBytes(mSegOutputData, width * height * 5 / 4, width * height / 4));
-        vBuffer.rewind();
-
-//        检查数据有没有问题
-//        byte[] arr = new byte[uBuffer.remaining()];
-//        uBuffer.get(arr);
-//        saveBytes2File(arr, String.format("IMG_SegResult_%dx%d_U.Gray", height / 2, width / 2));
-//
-//        arr = new byte[vBuffer.remaining()];
-//        vBuffer.get(arr);
-//        saveBytes2File(arr, String.format("IMG_SegResult_%dx%d_V.Gray", height / 2, width / 2));
-
-        //推流
-        pushFramePlane(yBuffer, height, uBuffer, height / 2, vBuffer, height / 2, 1);
     }
 }

@@ -17,7 +17,6 @@
 #include <BaseGLRender.h>
 #include <vector>
 #include "../BodySeg.h"
-#include "RGB2NV21Helper.h"
 
 using namespace glm;
 using namespace std;
@@ -69,8 +68,6 @@ public:
         m_RenderFrameCallback = callback;
     }
 
-    void ReadImgFromTexture(int textureId, NativeImage *pOutImg);
-
 private:
     GLCameraRender();
     virtual ~GLCameraRender();
@@ -102,8 +99,6 @@ private:
     BodySeg *m_BodySeg = nullptr;
     NativeImage m_MaskImage;
     GLuint m_MaskTextureId = GL_NONE;
-
-    RGB2NV21Helper *m_Rgb2Nv21Helper = nullptr;
 };
 
 
