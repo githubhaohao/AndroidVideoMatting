@@ -1,19 +1,13 @@
 package com.tencent.ncnnbodyseg.media;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.SurfaceTexture;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.Environment;
 import android.util.Log;
-
-import com.tencent.ncnnbodyseg.R;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,10 +15,17 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+
+/**
+ *
+ * Created by 公众号：字节流动 on 2022/3/12.
+ * https://github.com/githubhaohao/LearnFFmpeg
+ * 最新文章首发于公众号：字节流动，有疑问或者技术交流可以添加微信 Byte-Flow ,领取视频教程, 拉你进技术交流群
+ *
+ * */
 
 public class MyNativeContext extends CameraNativeContext implements GLSurfaceView.Renderer{
     private static final String TAG = "MyNativeContext";

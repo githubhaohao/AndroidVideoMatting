@@ -1,6 +1,6 @@
 /**
  *
- * Created by 公众号：字节流动 on 2021/3/12.
+ * Created by 公众号：字节流动 on 2022/3/12.
  * https://github.com/githubhaohao/LearnFFmpeg
  * 最新文章首发于公众号：字节流动，有疑问或者技术交流可以添加微信 Byte-Flow ,领取视频教程, 拉你进技术交流群
  *

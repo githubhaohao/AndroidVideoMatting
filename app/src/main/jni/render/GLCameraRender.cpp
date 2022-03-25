@@ -462,25 +462,6 @@ void GLCameraRender::OnDrawFrame() {
     GLUtils::setInt(m_ProgramObj, "u_nImgType", m_RenderImage.format);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (const void *)0);
 
-//    测试从纹理中读取数据
-//    NativeImage image;
-//    image.format = IMAGE_FORMAT_NV21;
-//    image.width  = m_RenderImage.width;
-//    image.height = m_RenderImage.height;
-//    NativeImageUtil::AllocNativeImage(&image);
-//    ReadImgFromTexture(m_TextureIds[0], &image);
-//    NativeImageUtil::DumpNativeImage(&image, "/sdcard", "RGB2NV21");
-//    NativeImageUtil::FreeNativeImage(&image);
-
-//    NativeImage image;
-//    image.format = IMAGE_FORMAT_RGBA;
-//    image.width  = m_RenderImage.width;
-//    image.height = m_RenderImage.height;
-//    NativeImageUtil::AllocNativeImage(&image);
-//    ReadImgFromTexture(m_MaskTextureId, &image);
-//    NativeImageUtil::DumpNativeImage(&image, "/sdcard", "RGBA");
-//    NativeImageUtil::FreeNativeImage(&image);
-
     lock.unlock();
 
 }
